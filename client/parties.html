@@ -59,11 +59,6 @@
       <g class="circles"></g>
       <g class="labels"></g>
     </svg>
-    <div>
-      <small class="attribution muted">&copy;
-        <a href="http://www.openstreetmap.org/?lat=-34.929&lon=138.601&zoom=14&layers=M"
-           target="_blank">OpenStreetMap</a> contributors</small>
-    </div>
   </div>
 </template>
 
@@ -100,11 +95,9 @@
         {{/if}}
       {{/with}}
     {{else}}
-      <h1 class="muted pagination-centered">
+      <h1 class="pagination-centered">
         {{#if anyParties}}
           Click a farm to select it
-        {{else}}
-          Sign in and double click the map to post a farm
         {{/if}}
       </h1>
     {{/if}}
