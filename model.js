@@ -1,11 +1,11 @@
-// All Tomorrow's Parties -- data model
+// All Tomorrow's Farms -- data model
 // Loaded on both the client and the server
 
 ///////////////////////////////////////////////////////////////////////////////
-// Parties
+// Farms -- based on Meteor Parties example app
 
 /*
-  Each party is represented by a document in the Parties collection:
+  Each farm is represented by a document in the Parties collection:
     owner: user id
     x, y: Number (screen coordinates in the interval [0, 1])
     title, description: String
@@ -100,7 +100,7 @@ Meteor.methods({
       throw new Meteor.Error(404, "No such party");
     if (party.public)
       throw new Meteor.Error(400,
-                             "That party is public. No need to invite people.");
+                             "That farm is public. No need to invite people.");
     if (userId !== party.owner && ! _.contains(party.invited, userId)) {
       Parties.update(partyId, { $addToSet: { invited: userId } });
 
@@ -110,12 +110,12 @@ Meteor.methods({
         // This code only runs on the server. If you didn't want clients
         // to be able to see it, you could move it to a separate file.
         Email.send({
-          from: "noreply@example.com",
+          from: "gerg.bowering+shonin-adl@gmail.com",
           to: to,
           replyTo: from || undefined,
-          subject: "PARTY: " + party.title,
+          subject: "FARM: " + party.title,
           text:
-"Hey, I just invited you to '" + party.title + "' on All Tomorrow's Parties." +
+"Hey, I just invited you to '" + party.title + "' on All Tomorrow's Farms." +
 "\n\nCome check it out: " + Meteor.absoluteUrl() + "\n"
         });
       }
@@ -131,11 +131,11 @@ Meteor.methods({
       throw new Meteor.Error(400, "Invalid RSVP");
     var party = Parties.findOne(partyId);
     if (! party)
-      throw new Meteor.Error(404, "No such party");
+      throw new Meteor.Error(404, "No such farm");
     if (! party.public && party.owner !== this.userId &&
         !_.contains(party.invited, this.userId))
       // private, but let's not tell this to the user
-      throw new Meteor.Error(403, "No such party");
+      throw new Meteor.Error(403, "No such farm");
 
     var rsvpIndex = _.indexOf(_.pluck(party.rsvps, 'user'), this.userId);
     if (rsvpIndex !== -1) {
@@ -179,5 +179,7 @@ var contactEmail = function (user) {
     return user.emails[0].address;
   if (user.services && user.services.facebook && user.services.facebook.email)
     return user.services.facebook.email;
+  if (user.services && user.services.google && user.services.google.email)
+    return user.services.google.email;
   return null;
 };

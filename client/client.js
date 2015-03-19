@@ -1,9 +1,9 @@
-// All Tomorrow's Parties -- client
+// All Tomorrow's Farms -- client
 
 Meteor.subscribe("directory");
 Meteor.subscribe("parties");
 
-// If no party selected, or if the selected party was deleted, select one.
+// If no farm selected, or if the selected party was deleted, select one.
 Meteor.startup(function () {
   Deps.autorun(function () {
     var selected = Session.get("selected");
@@ -18,7 +18,7 @@ Meteor.startup(function () {
 });
 
 ///////////////////////////////////////////////////////////////////////////////
-// Party details sidebar
+// Farm details sidebar
 
 Template.details.helpers({
   party: function () {
@@ -69,7 +69,7 @@ Template.details.events({
 });
 
 ///////////////////////////////////////////////////////////////////////////////
-// Party attendance widget
+// Farm attendance widget
 
 Template.attendance.helpers({
   rsvpName: function () {

@@ -1,5 +1,5 @@
 <head>
-  <title>All Tomorrow's Parties</title>
+  <title>All Tomorrow's Farms</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -23,7 +23,7 @@
       <div class="span10">
         <div class="header row">
           <div class="span5">
-            <h3 style="margin-bottom: 0px">All Tomorrow's Parties</h3>
+            <h3 style="margin-bottom: 0px">All Tomorrow's Farms</h3>
           </div>
           <div class="span5">
             <div style="float: right">
@@ -37,7 +37,7 @@
             {{> map}}
             {{#if currentUser}}
             <div class="pagination-centered">
-              <em><small>Double click the map to post a party!</small></em>
+              <em><small>Double click the map to post a farm!</small></em>
             </div>
             {{/if}}
           </div>
@@ -61,7 +61,7 @@
     </svg>
     <div>
       <small class="attribution muted">&copy;
-        <a href="http://www.openstreetmap.org/?lat=37.78212&lon=-122.40146&zoom=15&layers=M"
+        <a href="http://www.openstreetmap.org/?lat=-34.929&lon=138.601&zoom=14&layers=M"
            target="_blank">OpenStreetMap</a> contributors</small>
     </div>
   </div>
@@ -86,7 +86,7 @@
             <input type="button" value="No"
                    class="btn btn-small rsvp_no {{maybeChosen "no"}}">
           {{else}}
-            <i>Sign in to RSVP for this party.</i>
+            <i>Sign in to RSVP for this farm.</i>
           {{/if}}
           <p><small>Posted by {{creatorName}}</small></p>
         </div>
@@ -102,9 +102,9 @@
     {{else}}
       <h1 class="muted pagination-centered">
         {{#if anyParties}}
-          Click a party to select it
+          Click a farm to select it
         {{else}}
-          Sign in and double click the map to post a party
+          Sign in and double click the map to post a farm
         {{/if}}
       </h1>
     {{/if}}
@@ -151,7 +151,7 @@
 
     {{#if canInvite}}
       <div class="invite">
-        <a href="#" class="btn btn-mini invite">Invite people</a>
+        <a href="#" class="btn btn-mini invite">Invite agents</a>
       </div>
     {{/if}}
   </div>
@@ -162,7 +162,7 @@
   <div class="modal">
     <div class="modal-header">
       <button type="button" class="close cancel">&times;</button>
-      <h3>Add party</h3>
+      <h3>Add farm</h3>
     </div>
 
     <div class="modal-body">
@@ -178,13 +178,13 @@
 
       <label class="checkbox">
         <input type="checkbox" class="private">
-        Private party &mdash; invitees only
+        Private farm &mdash; invitees only
       </label>
     </div>
 
     <div class="modal-footer">
       <a href="#" class="btn cancel">Cancel</a>
-      <a href="#" class="btn btn-primary save">Add party</a>
+      <a href="#" class="btn btn-primary save">Add farm</a>
     </div>
   </div>
 </template>
@@ -194,7 +194,7 @@
   <div class="modal">
     <div class="modal-header">
       <button type="button" class="close done">&times;</button>
-      <h3>Invite people</h3>
+      <h3>Invite agents</h3>
     </div>
 
     <div class="modal-body">
