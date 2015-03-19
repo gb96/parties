@@ -3,6 +3,9 @@
 Meteor.subscribe("directory");
 Meteor.subscribe("parties");
 
+var sizeX = 1490; // map width
+vae sizeY = 962; // map height
+
 // If no farm selected, or if the selected party was deleted, select one.
 Meteor.startup(function () {
   Deps.autorun(function () {
@@ -121,7 +124,7 @@ Template.map.events({
     if (! Meteor.userId()) // must be logged in to create events
       return;
     var coords = coordsRelativeToElement(event.currentTarget, event);
-    openCreateDialog(coords.x / 500, coords.y / 500);
+    openCreateDialog(coords.x / sizeX, coords.y / sizeY);
   }
 });
 
@@ -140,8 +143,8 @@ Template.map.rendered = function () {
       // Draw a circle for each party
       var updateCircles = function (group) {
         group.attr("id", function (party) { return party._id; })
-        .attr("cx", function (party) { return party.x * 500; })
-        .attr("cy", function (party) { return party.y * 500; })
+        .attr("cx", function (party) { return party.x * scaleX; })
+        .attr("cy", function (party) { return party.y * scaleY; })
         .attr("r", radius)
         .attr("class", function (party) {
           return party.public ? "public" : "private";
@@ -162,8 +165,8 @@ Template.map.rendered = function () {
       var updateLabels = function (group) {
         group.attr("id", function (party) { return party._id; })
         .text(function (party) {return attending(party) || '';})
-        .attr("x", function (party) { return party.x * 500; })
-        .attr("y", function (party) { return party.y * 500 + radius(party)/2 })
+        .attr("x", function (party) { return party.x * sizeX; })
+        .attr("y", function (party) { return party.y * sizeY + radius(party)/2 })
         .style('font-size', function (party) {
           return radius(party) * 1.25 + "px";
         });
@@ -180,8 +183,8 @@ Template.map.rendered = function () {
       var callout = d3.select(self.node).select("circle.callout")
         .transition().duration(250).ease("cubic-out");
       if (selectedParty)
-        callout.attr("cx", selectedParty.x * 500)
-        .attr("cy", selectedParty.y * 500)
+        callout.attr("cx", selectedParty.x * sizeX)
+        .attr("cy", selectedParty.y * sizeY)
         .attr("r", radius(selectedParty) + 10)
         .attr("class", "callout")
         .attr("display", '');
