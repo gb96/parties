@@ -9,6 +9,9 @@ var sizeY = 820; // map height
 // If no farm selected, or if the selected party was deleted, select one.
 Meteor.startup(function () {
   Deps.autorun(function () {
+    // Flag mobile / desktop
+    Session.set("isMobile", Meteor.isMobile());
+
     var selected = Session.get("selected");
     if (! selected || ! Parties.findOne(selected)) {
       var party = Parties.findOne();

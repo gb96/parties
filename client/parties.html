@@ -1,9 +1,12 @@
 <head>
   <title>All Tomorrow's Farms</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {{#if isMobile}}
   <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
   <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  {{/if}}
 </head>
 
 <body>
@@ -38,7 +41,11 @@
             {{> map}}
             {{#if currentUser}}
             <div class="pagination-left">
-              <em><small>Double click the map to post a farm!</small></em>
+              {{#if isMobile}}
+                <em><small>Double click the map to post a farm!</small></em>
+              {{else}}
+                <em><small>Long-press the map to post a farm!</small></em>
+              {{/if}}
             </div>
             {{/if}}
           </div>
@@ -52,11 +59,11 @@
 </template>
 
 <template name="map">
-  <div class="map">
+  <div class="map" noSelect>
     <svg width="960" height="820">
       <circle class="callout" cx=-100 cy=-100></circle>
-      <g class="circles"></g>
-      <g class="labels"></g>
+      <g class="circles noSelect"></g>
+      <g class="labels noSelect"></g>
     </svg>
   </div>
 </template>
@@ -96,7 +103,11 @@
     {{else}}
       <h1 class="pagination-left">
         {{#if anyParties}}
-          Click a farm to select it
+          {{#if isMobile}}
+            Click a farm to select it
+          {{else}}
+            Tap a farm to select it
+          {{/if}}
         {{/if}}
       </h1>
     {{/if}}
