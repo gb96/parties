@@ -143,8 +143,8 @@ Template.map.rendered = function () {
       // Draw a circle for each party
       var updateCircles = function (group) {
         group.attr("id", function (party) { return party._id; })
-        .attr("cx", function (party) { return party.x * scaleX; })
-        .attr("cy", function (party) { return party.y * scaleY; })
+        .attr("cx", function (party) { return party.x * sizeX; })
+        .attr("cy", function (party) { return party.y * sizeY; })
         .attr("r", radius)
         .attr("class", function (party) {
           return party.public ? "public" : "private";
