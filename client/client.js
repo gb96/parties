@@ -3,8 +3,8 @@
 Meteor.subscribe("directory");
 Meteor.subscribe("parties");
 
-var sizeX = 1490; // map width
-vae sizeY = 962; // map height
+var sizeX = 960; // map width
+vae sizeY = 820; // map height
 
 // If no farm selected, or if the selected party was deleted, select one.
 Meteor.startup(function () {
