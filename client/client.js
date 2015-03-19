@@ -117,10 +117,10 @@ var coordsRelativeToElement = function (element, event) {
 };
 
 Template.map.events({
-  'mousedown circle, mousedown text': function (event, template) {
+  'mousedown circle, mousedown text, tapcircle, tap text': function (event, template) {
     Session.set("selected", event.currentTarget.id);
   },
-  'dblclick .map': function (event, template) {
+  'dblclick .map, taphold .map': function (event, template) {
     if (! Meteor.userId()) // must be logged in to create events
       return;
     var coords = coordsRelativeToElement(event.currentTarget, event);
