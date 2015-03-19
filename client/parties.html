@@ -9,10 +9,8 @@
 </body>
 
 <template name="headers">
-  {{#if isMobile}}
-  <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-  <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-  <script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  {{#if isPhone}}
+  <script src="/longpress.min.js"></script>
   {{/if}}
 </template>
 
@@ -44,7 +42,7 @@
             {{> map}}
             {{#if currentUser}}
             <div class="pagination-left">
-              {{#if isMobile}}
+              {{#if isPhone}}
                 <em><small>Double click the map to post a farm!</small></em>
               {{else}}
                 <em><small>Long-press the map to post a farm!</small></em>
@@ -106,7 +104,7 @@
     {{else}}
       <h1 class="pagination-left">
         {{#if anyParties}}
-          {{#if isMobile}}
+          {{#if isPhone}}
             Click a farm to select it
           {{else}}
             Tap a farm to select it
