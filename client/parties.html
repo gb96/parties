@@ -1,5 +1,5 @@
 <head>
-  <title>All Tomorrow's Farms</title>
+  <title>Upcoming Farms Adelaide</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -10,7 +10,7 @@
 
 <template name="headers">
   {{#if isPhone}}
-  <!-- script src="/longpress.min.js"></script -->
+  <small>(Page rendered for phone/tablet.)</small>
   {{/if}}
 </template>
 
@@ -28,7 +28,7 @@
       <div class="span10">
         <div class="header row" >
           <div class="span4">
-            <h3 style="margin-bottom: 0px">All Tomorrow's Farms</h3>
+            <h3 style="margin-bottom: 0px">Upcoming Farms Adelaide</h3>
           </div>
           <div class="span5">
             <div style="float: right">
@@ -74,6 +74,7 @@
     {{#if party}}
       {{#with party}}
         <h1>{{title}}</h1>
+        <h3>When: {{startdatetime}}</h3>
 
         <div class="description">{{description}}</div>
 
@@ -177,6 +178,9 @@
       <label>Title</label>
       <input type="text" class="title span5">
 
+      <label>Start Date Time</label>
+      {{> datetimepicker}}
+
       <label>Description</label>
       <textarea class="description span5"></textarea>
 
@@ -191,6 +195,10 @@
       <a href="#" class="btn btn-primary save">Add farm</a>
     </div>
   </div>
+</template>
+
+<template name="datetimepicker">
+  <input class="datetimepicker startdatetime form-control span6" type="text" id="datetimepicker"/>
 </template>
 
 <template name="inviteDialog">

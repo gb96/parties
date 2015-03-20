@@ -149,7 +149,7 @@ Template.map.events({
       Meteor.setTimeout(function() { Session.set('pending.map.doubleclick', undefined); }, 2500); // 2500ms timeout for SLOW double-press
     }
   },
-  'dblclick .map, taphold .map, longpress .map': function (event, template) {
+  'dblclick .map': function (event, template) {
     if (!Meteor.userId()) // must be logged in to create events
       return;
 
@@ -183,7 +183,7 @@ Template.map.rendered = function () {
           return party.public ? "public" : "private";
         })
         .style('opacity', function (party) {
-          return selected === party._id ? 1 : 0.6;
+          return selected === party._id ? 1 : 0.75;
         });
       };
 
@@ -246,9 +246,16 @@ Template.page.helpers({
   }
 });
 
+Template.datetimepicker.rendered = function() {
+  // initialize datetimepicker #datetimepicker .datetimepicker
+  // format: 'DD/MM/YYYY HHmm'
+  $('#datetimepicker').datetimepicker({locale: 'en-au'});
+};
+
 Template.createDialog.events({
   'click .save': function (event, template) {
     var title = template.find(".title").value;
+    var startdatetime = template.find(".startdatetime").value;
     var description = template.find(".description").value;
     var public = !template.find(".private").checked;
     var coords = Session.get("createCoords");
@@ -256,6 +263,7 @@ Template.createDialog.events({
     if (title.length && description.length) {
       var id = createParty({
         title: title,
+        startdatetime: startdatetime,
         description: description,
         x: coords.x,
         y: coords.y,

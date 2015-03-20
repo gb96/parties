@@ -9,6 +9,7 @@
     owner: user id
     x, y: Number (screen coordinates in the interval [0, 1])
     title, description: String
+    startdatetime: String,
     public: Boolean
     invited: Array of user id's that are invited (only if !public)
     rsvps: Array of objects like {user: userId, rsvp: "yes"} (or "no"/"maybe")
@@ -23,7 +24,7 @@ Parties.allow({
     if (userId !== party.owner)
       return false; // not the owner
 
-    var allowed = ["title", "description", "x", "y"];
+    var allowed = ["title", "startdatetime", "description", "x", "y"];
     if (_.difference(fields, allowed).length)
       return false; // tried to write to forbidden field
 
@@ -59,10 +60,11 @@ createParty = function (options) {
 };
 
 Meteor.methods({
-  // options should include: title, description, x, y, public
+  // options should include: title, startdate, starttime, description, x, y, public
   createParty: function (options) {
     check(options, {
       title: NonEmptyString,
+      startdatetime: NonEmptyString,
       description: NonEmptyString,
       x: Coordinate,
       y: Coordinate,
@@ -84,6 +86,7 @@ Meteor.methods({
       x: options.x,
       y: options.y,
       title: options.title,
+      startdatetime: options.startdatetime,
       description: options.description,
       public: !! options.public,
       invited: [],
@@ -113,9 +116,9 @@ Meteor.methods({
           from: "gerg.bowering+shonin-adl@gmail.com",
           to: to,
           replyTo: from || undefined,
-          subject: "FARM: " + party.title,
+          subject: "FARM: " + party.title + " " + party.startdatetime,
           text:
-"Hey, I just invited you to '" + party.title + "' on All Tomorrow's Farms." +
+"Hey, I just invited you to '" + party.title + "' on Upcoming Farms Adelaide." +
 "\n\nCome check it out: " + Meteor.absoluteUrl() + "\n"
         });
       }

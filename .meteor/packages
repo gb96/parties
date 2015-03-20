@@ -14,3 +14,5 @@ accounts-twitter
 audit-argument-checks
 accounts-google
 mystor:device-detection
+tsega:bootstrap3-datetimepicker
+momentjs:moment
