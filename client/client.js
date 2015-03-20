@@ -119,6 +119,13 @@ var coordsRelativeToElement = function (element, event) {
   return { x: x, y: y };
 };
 
+var distance2d = function (coords1, coords2) {
+  var dx = coords2.x - coords1.x;
+  var dy = coords2.y - coords1.y;
+  var d = Math.sqrt(dx * dx + dy * dy);
+  return d;
+};
+
 Template.map.events({
   'mousedown circle, mousedown text, tapcircle, tap text': function (event, template) {
     Session.set("selected", event.currentTarget.id);
@@ -131,16 +138,15 @@ Template.map.events({
     if (pendingMapDoubleClick) {
       // clear pending map double click from session
       Session.set('pending.map.doubleclick', undefined);
-      // FIXME define or call a distance method to allow some tolerance here:
-      if (coords.x == pendingMapDoubleClick.x && coords.y == pendingMapDoubleClick.y) {
-        // We have a second click at the same coords.
-        // FIXME need to fix double-click timer threshold...
+      // distance method to allow some tolerance here:
+      if (distance2d(pendingMapDoubleClick, coords) < 15) {
+        // We have a second click at the same or nearby coords.
         openCreateDialog(coords.x / sizeX, coords.y / sizeY);    
       }
     } else {
       // set pending map double click in session and a timeout too:
       Session.set('pending.map.doubleclick', coords);
-      Meteor.setTimeout(function() { Session.set('pending.map.doubleclick', undefined); }, 800); // 800ms timeout for dblclick
+      Meteor.setTimeout(function() { Session.set('pending.map.doubleclick', undefined); }, 1500); // 1500ms timeout for dblclick
     }
   },
   'dblclick .map, taphold .map, longpress .map': function (event, template) {
