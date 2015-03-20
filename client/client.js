@@ -139,14 +139,14 @@ Template.map.events({
       // clear pending map double click from session
       Session.set('pending.map.doubleclick', undefined);
       // distance method to allow some tolerance here:
-      if (distance2d(pendingMapDoubleClick, coords) < 15) {
+      if (distance2d(pendingMapDoubleClick, coords) < 64) {
         // We have a second click at the same or nearby coords.
         openCreateDialog(coords.x / sizeX, coords.y / sizeY);    
       }
     } else {
       // set pending map double click in session and a timeout too:
       Session.set('pending.map.doubleclick', coords);
-      Meteor.setTimeout(function() { Session.set('pending.map.doubleclick', undefined); }, 1500); // 1500ms timeout for dblclick
+      Meteor.setTimeout(function() { Session.set('pending.map.doubleclick', undefined); }, 2500); // 2500ms timeout for SLOW double-press
     }
   },
   'dblclick .map, taphold .map, longpress .map': function (event, template) {
