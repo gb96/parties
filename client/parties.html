@@ -43,9 +43,9 @@
             {{#if currentUser}}
             <div class="pagination-left">
               {{#if isPhone}}
-                <em><small>Double click the map to post a farm!</small></em>
+                <em><small>Long-press map to post a farm!</small></em>
               {{else}}
-                <em><small>Long-press the map to post a farm!</small></em>
+                <em><small>Double-click map to post a farm!</small></em>
               {{/if}}
             </div>
             {{/if}}
@@ -105,9 +105,9 @@
       <h1 class="pagination-left">
         {{#if anyParties}}
           {{#if isPhone}}
-            Click a farm to select it
-          {{else}}
             Tap a farm to select it
+          {{else}}
+            Click a farm to select it
           {{/if}}
         {{/if}}
       </h1>

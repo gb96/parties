@@ -9,11 +9,11 @@ var sizeY = 820; // map height
 // If no farm selected, or if the selected party was deleted, select one.
 Meteor.startup(function () {
   Deps.autorun(function () {
-    // Flag mobile / desktop
-    Session.set("isMobile", Meteor.isMobile());
+    // Flag mobile / desktop using mystor:meteor-device-detection
+    Session.set("isMobile", Meteor.Device.isTablet() || Meteor.Device.isPhone());
 
     var selected = Session.get("selected");
-    if (! selected || ! Parties.findOne(selected)) {
+    if (!selected || !Parties.findOne(selected)) {
       var party = Parties.findOne();
       if (party)
         Session.set("selected", party._id);
@@ -123,9 +123,33 @@ Template.map.events({
   'mousedown circle, mousedown text, tapcircle, tap text': function (event, template) {
     Session.set("selected", event.currentTarget.id);
   },
-  'dblclick .map, taphold .map, longpress .map': function (event, template) {
-    if (! Meteor.userId()) // must be logged in to create events
+  'mousedown .map': function (event, template) {
+    if (!Meteor.userId()) // must be logged in to create events
       return;
+    var coords = coordsRelativeToElement(event.currentTarget, event);
+    var pendingMapDoubleClick = Session.get('pending.map.doubleclick');
+    if (pendingMapDoubleClick) {
+      // clear pending map double click from session
+      Session.set('pending.map.doubleclick', undefined);
+      // FIXME define or call a distance method to allow some tolerance here:
+      if (coords.x == pendingMapDoubleClick.x && coords.y == pendingMapDoubleClick.y) {
+        // We have a second click at the same coords.
+        // FIXME need to fix double-click timer threshold...
+        openCreateDialog(coords.x / sizeX, coords.y / sizeY);    
+      }
+    } else {
+      // set pending map double click in session and a timeout too:
+      Session.set('pending.map.doubleclick', coords);
+      Meteor.setTimeout(function() { Session.set('pending.map.doubleclick', undefined); }, 800); // 800ms timeout for dblclick
+    }
+  },
+  'dblclick .map, taphold .map, longpress .map': function (event, template) {
+    if (!Meteor.userId()) // must be logged in to create events
+      return;
+
+    // clear pending map double click from session
+    Session.set('pending.map.doubleclick', undefined);
+    
     var coords = coordsRelativeToElement(event.currentTarget, event);
     openCreateDialog(coords.x / sizeX, coords.y / sizeY);
   }
@@ -135,7 +159,7 @@ Template.map.rendered = function () {
   var self = this;
   self.node = self.find("svg");
 
-  if (! self.handle) {
+  if (!self.handle) {
     self.handle = Deps.autorun(function () {
       var selected = Session.get('selected');
       var selectedParty = selected && Parties.findOne(selected);
@@ -220,7 +244,7 @@ Template.createDialog.events({
   'click .save': function (event, template) {
     var title = template.find(".title").value;
     var description = template.find(".description").value;
-    var public = ! template.find(".private").checked;
+    var public = !template.find(".private").checked;
     var coords = Session.get("createCoords");
 
     if (title.length && description.length) {
@@ -279,7 +303,7 @@ Template.inviteDialog.events({
 Template.inviteDialog.helpers({
   uninvited: function () {
     var party = Parties.findOne(Session.get("selected"));
-    if (! party)
+    if (!party)
       return []; // party hasn't loaded yet
     return Meteor.users.find({$nor: [{_id: {$in: party.invited}},
                                      {_id: party.owner}]});
