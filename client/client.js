@@ -249,7 +249,7 @@ Template.page.helpers({
 Template.datetimepicker.rendered = function() {
   // initialize datetimepicker #datetimepicker .datetimepicker
   // format: 'DD/MM/YYYY HHmm'
-  $('#datetimepicker').datetimepicker({locale: 'en-au'});
+  $('#datetimepicker').datetimepicker({locale: 'en-au', format: 'DD/MM/YYYY HHmm'});
 };
 
 Template.createDialog.events({
@@ -271,7 +271,7 @@ Template.createDialog.events({
       });
 
       Session.set("selected", id);
-      if (! public && Meteor.users.find().count() > 1)
+      if (!public && Meteor.users.find().count() > 1)
         openInviteDialog();
       Session.set("showCreateDialog", false);
     } else {
