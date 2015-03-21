@@ -1,4 +1,4 @@
-# All Tomorrow's Farms
+# Upcoming Farms Adelaide
 
 This is a "simple" Meteor demonstration example app that has been hacked to plan Ingress Farms instead of parties.
 
