@@ -34,8 +34,8 @@ Parties.allow({
     return true;
   },
   remove: function (userId, party) {
-    // You can only remove parties that you created and nobody is going to.
-    return party.owner === userId && attending(party) === 0;
+    // You can only remove parties that you created (NOT and nobody is going to).
+    return party.owner === userId; //  && attending(party) === 0;
   }
 });
 
@@ -100,7 +100,7 @@ Meteor.methods({
     check(userId, String);
     var party = Parties.findOne(partyId);
     if (! party || party.owner !== this.userId)
-      throw new Meteor.Error(404, "No such party");
+      throw new Meteor.Error(404, "No such farm");
     if (party.public)
       throw new Meteor.Error(400,
                              "That farm is public. No need to invite people.");
@@ -113,7 +113,7 @@ Meteor.methods({
         // This code only runs on the server. If you didn't want clients
         // to be able to see it, you could move it to a separate file.
         Email.send({
-          from: "gerg.bowering+shonin-adl@gmail.com",
+          from: "gerg.bowering@gmail.com",
           to: to,
           replyTo: from || undefined,
           subject: "FARM: " + party.title + " " + party.startdatetime,
@@ -180,8 +180,6 @@ displayName = function (user) {
 var contactEmail = function (user) {
   if (user.emails && user.emails.length)
     return user.emails[0].address;
-  if (user.services && user.services.facebook && user.services.facebook.email)
-    return user.services.facebook.email;
   if (user.services && user.services.google && user.services.google.email)
     return user.services.google.email;
   return null;
