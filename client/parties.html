@@ -96,7 +96,7 @@
 
         {{#if canRemove}}
           <div class="alert alert-info"><small>
-              You posted this party and nobody is signed up to go, so if
+              You posted this party, so if
               you like, you could
               <b><a href="#" class="remove">delete this listing</a></b>.
           </small></div>
@@ -185,7 +185,7 @@
       <textarea class="description span5"></textarea>
 
       <label class="checkbox">
-        <input type="checkbox" class="private">
+        <input type="checkbox" class="private" checked>
         Private farm &mdash; invitees only
       </label>
     </div>
@@ -198,7 +198,7 @@
 </template>
 
 <template name="datetimepicker">
-  <input class="datetimepicker startdatetime form-control span6" type="text" id="datetimepicker"/>
+  <input class="datetimepicker startdatetime form-control span5" type="text" id="datetimepicker"/>
 </template>
 
 <template name="inviteDialog">
