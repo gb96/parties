@@ -40,7 +40,7 @@ Template.details.helpers({
     return displayName(owner);
   },
   canRemove: function () {
-    return this.owner === Meteor.userId() && attending(this) === 0;
+    return this.owner === Meteor.userId(); // && attending(this) === 0;
   },
   maybeChosen: function (what) {
     var myRsvp = _.find(this.rsvps, function (r) {
@@ -146,7 +146,7 @@ Template.map.events({
     } else {
       // set pending map double click in session and a timeout too:
       Session.set('pending.map.doubleclick', coords);
-      Meteor.setTimeout(function() { Session.set('pending.map.doubleclick', undefined); }, 2500); // 2500ms timeout for SLOW double-press
+      Meteor.setTimeout(function() { Session.set('pending.map.doubleclick', undefined); }, 2000); // 2000ms timeout for SLOW double-press
     }
   },
   'dblclick .map': function (event, template) {
