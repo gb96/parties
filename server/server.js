@@ -1,4 +1,7 @@
-// All Tomorrow's Parties -- server
+// Upcoming Farms Adelaide -- server
+
+// Allow the browser to load Font Awesome resources from CDN:
+BrowserPolicy.content.allowOriginForAll('*.bootstrapcdn.com');
 
 Meteor.publish("directory", function () {
   return Meteor.users.find({}, {fields: {emails: 1, profile: 1}});

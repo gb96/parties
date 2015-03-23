@@ -1,6 +1,7 @@
 <head>
   <title>Upcoming Farms Adelaide</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- link rel="stylesheet" href="/css/font-awesome.min.css" -->
 </head>
 
 <body>
@@ -61,7 +62,7 @@
 
 <template name="map">
   <div class="map" noSelect>
-    <svg width="1000" height="860">
+    <svg width="1000" height="900px">
       <circle class="callout" cx=-100 cy=-100></circle>
       <g class="circles noSelect"></g>
       <g class="labels noSelect"></g>
@@ -170,7 +171,7 @@
       <h3>Add farm</h3>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body" style="height: 800px">
       {{#if error}}
         <div class="alert alert-error">{{error}}</div>
       {{/if}}
@@ -198,7 +199,12 @@
 </template>
 
 <template name="datetimepicker">
-  <input class="datetimepicker startdatetime form-control span5" type="text" id="datetimepicker"/>
+  <div class="input-group datetimepicker">
+    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+    <input class="startdatetime form-control" type="text" id="datetimepicker"/>
+  </div>
+
+  <!-- input class="datetimepicker startdatetime form-control span5" type="text" id="datetimepicker"/ -->
 </template>
 
 <template name="inviteDialog">
