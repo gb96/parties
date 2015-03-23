@@ -76,7 +76,7 @@
         <h1>{{title}}</h1>
         <h3>When: {{startdatetime}}</h3>
 
-        <div class="description">{{description}}</div>
+        <div class="description">{{#autolink}}{{description}}{{/autolink}}</div>
 
         {{> attendance}}
 

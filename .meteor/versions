@@ -1,9 +1,7 @@
 accounts-base@1.2.0
-accounts-facebook@1.0.4
 accounts-google@1.0.4
 accounts-oauth@1.1.4
 accounts-password@1.1.0
-accounts-twitter@1.0.4
 accounts-ui@1.1.5
 accounts-ui-unstyled@1.1.7
 audit-argument-checks@1.0.3
@@ -16,12 +14,12 @@ boilerplate-generator@1.0.3
 bootstrap@1.0.1
 callback-hook@1.0.3
 check@1.0.5
+copleykj:autolinker@1.0.2
 d3@1.0.0
 ddp@1.1.0
 deps@1.0.7
 ejson@1.0.6
 email@1.0.6
-facebook@1.1.4
 fastclick@1.0.3
 geojson-utils@1.0.3
 google@1.1.5
@@ -41,12 +39,11 @@ meteor-platform@1.2.2
 minifiers@1.1.4
 minimongo@1.0.7
 mobile-status-bar@1.0.3
-momentjs:moment@2.8.4
+momentjs:moment@2.9.0
 mongo@1.1.0
 mystor:device-detection@0.2.0
 npm-bcrypt@0.7.8_1
 oauth@1.1.4
-oauth1@1.1.4
 oauth2@1.1.3
 observe-sequence@1.0.5
 ordered-dict@1.0.3
@@ -66,7 +63,6 @@ standard-app-packages@1.0.5
 templating@1.1.0
 tracker@1.0.6
 tsega:bootstrap3-datetimepicker@4.7.14_3
-twitter@1.1.4
 ui@1.0.6
 underscore@1.0.3
 url@1.0.4
