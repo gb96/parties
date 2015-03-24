@@ -11,3 +11,9 @@ Meteor.publish("parties", function () {
   return Parties.find(
     {$or: [{"public": true}, {invited: this.userId}, {owner: this.userId}]});
 });
+
+// Required to send email:
+Meteor.startup(function () {
+  process.env.MAIL_URL = "smtp://" + process.env.MAIL_USER + ":' + encodeURIComponent(process.env.MAIL_PASSWORD) + "@smtp.gmail.com:465";
+//  process.env.MAIL_URL = "smtp://username%40gmail.com:InsertYourGoogleAuthToken@smtp.gmail.com:465/";
+}
