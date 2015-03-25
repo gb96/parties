@@ -107,8 +107,13 @@ Meteor.methods({
     if (userId !== party.owner && ! _.contains(party.invited, userId)) {
       Parties.update(partyId, { $addToSet: { invited: userId } });
 
-      var from = contactEmail(Meteor.users.findOne(this.userId));
-      var to = contactEmail(Meteor.users.findOne(userId));
+      var partyHost = Meteor.users.findOne(this.userId);
+      var invitee = Meteor.users.findOne(userId);
+      var from = contactEmail(partyHost);
+      var to = contactEmail(invitee);
+      var fromDisplayName = displayName(partyHost);
+      var toDisplayName = displayName(invitee);
+
       if (Meteor.isServer && to) {
         // This code only runs on the server. If you didn't want clients
         // to be able to see it, you could move it to a separate file.
@@ -118,8 +123,10 @@ Meteor.methods({
           replyTo: from || undefined,
           subject: "FARM: " + party.title + " " + party.startdatetime,
           text:
-"Hey, I just invited you to '" + party.title + "' on Upcoming Farms Adelaide." +
-"\n\nCome check it out: " + Meteor.absoluteUrl() + "\n"
+"Hi " + toDisplayName +
+"\n\nI just invited you to '" + party.title + "' on Upcoming Farms Adelaide." +
+"\n\nCome check it out: " + Meteor.absoluteUrl() +
+"\n\n\n" + fromDisplayName + "\n"
         });
       }
     }
