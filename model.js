@@ -16,13 +16,36 @@
 */
 Parties = new Mongo.Collection("parties");
 
+// SuperUser can view/edit/modify any farm.
+getSuperuserId = function() {
+  if (Meteor.isServer) {
+    console.log('Server getSuperuserId() -> ' + process.env.SUPERUSER_ID);
+    return process.env.SUPERUSER_ID;
+  }
+  // Client side calls the server (sync):
+  // return Meteor.call('getSuperuserId'); // Sync call did not work??
+  var sessionSuperuserId = Session.get('superuserId');
+  if (sessionSuperuserId) {
+    console.log('Client getSuperuserId() -> ' + sessionSuperuserId);   
+    return sessionSuperuserId;
+  }
+
+  // Async call saves superuserId in client session:
+  Meteor.call('getSuperuserId', function(err, result) {
+    // cache the result in the Session
+    Session.set('superuserId', result);
+    console.log('Client Meteor.call("getsuperuserId") -> ' + result);
+  });
+  return Session.get('superuserId');
+};
+
 Parties.allow({
   insert: function (userId, party) {
     return false; // no cowboy inserts -- use createParty method
   },
   update: function (userId, party, fields, modifier) {
-    if (userId !== party.owner)
-      return false; // not the owner
+    if (userId !== party.owner && userId !== getSuperuserId())
+      return false; // not the owner or superuser
 
     var allowed = ["title", "startdatetime", "description", "x", "y"];
     if (_.difference(fields, allowed).length)
@@ -35,7 +58,7 @@ Parties.allow({
   },
   remove: function (userId, party) {
     // You can only remove parties that you created (NOT and nobody is going to).
-    return party.owner === userId; //  && attending(party) === 0;
+    return userId === party.owner || userId === getSuperuserId(); //  && attending(party) === 0;
   }
 });
 
@@ -99,12 +122,12 @@ Meteor.methods({
     check(partyId, String);
     check(userId, String);
     var party = Parties.findOne(partyId);
-    if (! party || party.owner !== this.userId)
+    if (!party || (this.userId !== party.owner && this.userId !== getSuperuserId()))
       throw new Meteor.Error(404, "No such farm");
     if (party.public)
       throw new Meteor.Error(400,
                              "That farm is public. No need to invite people.");
-    if (userId !== party.owner && ! _.contains(party.invited, userId)) {
+    if (userId !== party.owner && !_.contains(party.invited, userId)) {
       Parties.update(partyId, { $addToSet: { invited: userId } });
 
       var partyHost = Meteor.users.findOne(this.userId);
@@ -135,14 +158,16 @@ Meteor.methods({
   rsvp: function (partyId, rsvp) {
     check(partyId, String);
     check(rsvp, String);
-    if (! this.userId)
+    if (!this.userId)
       throw new Meteor.Error(403, "You must be logged in to RSVP");
-    if (! _.contains(['yes', 'no', 'maybe'], rsvp))
+    if (!_.contains(['yes', 'no', 'maybe'], rsvp))
       throw new Meteor.Error(400, "Invalid RSVP");
     var party = Parties.findOne(partyId);
-    if (! party)
+    if (!party)
       throw new Meteor.Error(404, "No such farm");
-    if (! party.public && party.owner !== this.userId &&
+    if (!party.public &&
+        this.userId !== getSuperuserId() &&
+        this.userId !== party.owner &&
         !_.contains(party.invited, this.userId))
       // private, but let's not tell this to the user
       throw new Meteor.Error(403, "No such farm");
@@ -172,6 +197,15 @@ Meteor.methods({
       Parties.update(partyId,
                      {$push: {rsvps: {user: this.userId, rsvp: rsvp}}});
     }
+  },
+
+  // This is a synchronous method that just exposes the value of the SUPERUSER_ID environment variable.
+  getSuperuserId: function() {
+    if (Meteor.isServer) {
+      return process.env.SUPERUSER_ID;
+    } else {
+      return Session.get('superuserId');
+    }
   }
 });
 
@@ -191,3 +225,4 @@ var contactEmail = function (user) {
     return user.services.google.email;
   return null;
 };
+

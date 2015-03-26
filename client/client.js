@@ -1,4 +1,4 @@
-// All Tomorrow's Farms -- client
+// Upcoming Farms -- client
 
 Meteor.subscribe("directory");
 Meteor.subscribe("parties");
@@ -8,6 +8,11 @@ var sizeY = 820; // map height
 
 // If no farm selected, or if the selected party was deleted, select one.
 Meteor.startup(function () {
+  console.log('Client startup()');
+
+  // Not sure best place to call this... calling it twice!
+  getSuperuserId();
+
   Deps.autorun(function () {
     // Flag mobile / desktop using mystor:meteor-device-detection
     Session.set("isMobile", Meteor.Device.isTablet() || Meteor.Device.isPhone());
@@ -20,6 +25,9 @@ Meteor.startup(function () {
       else
         Session.set("selected", null);
     }
+
+    // Not sure best place to call this... calling it twice!
+    getSuperuserId();
   });
 });
 
@@ -39,8 +47,13 @@ Template.details.helpers({
       return "me";
     return displayName(owner);
   },
+  isSuperuser: function() {
+    var userId = Meteor.userId();
+    return userId === getSuperuserId();
+  },
   canRemove: function () {
-    return this.owner === Meteor.userId(); // && attending(this) === 0;
+    var userId = Meteor.userId();
+    return this.owner === userId || userId === getSuperuserId(); // && attending(this) === 0;
   },
   maybeChosen: function (what) {
     var myRsvp = _.find(this.rsvps, function (r) {
@@ -100,11 +113,16 @@ Template.attendance.helpers({
   },
 
   nobody: function () {
-    return ! this.public && (this.rsvps.length + this.invited.length === 0);
+    return !this.public && (this.rsvps.length + this.invited.length === 0);
   },
 
   canInvite: function () {
-    return ! this.public && this.owner === Meteor.userId();
+    return !this.public && (this.owner === Meteor.userId() || getSuperuserId() === Meteor.userId());
+  },
+
+  isSuperuser: function () {
+    var userId = Meteor.userId();
+    return userId === getSuperuserId();
   }
 });
 
